@@ -2,8 +2,5 @@
 	"ImportPath": "github.com/BrandonEchols/02_SpellBookApp",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v75",
-	"Packages": [
-		"./..."
-	],
 	"Deps": []
 }
