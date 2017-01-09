@@ -6,11 +6,12 @@ import (
 	"log"
 	"github.com/BrandonEchols/02_SpellBookApp/models"
 	"fmt"
+	"os"
 )
 
 var tpl *template.Template
 var SBM map[string]models.SpellBook
-
+var port int
 type pageData struct {
 	Title string
 	SpellBook models.SpellBook
@@ -19,7 +20,7 @@ type pageData struct {
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.gohtml"))
 	SBM = models.GetSpellBookMap()
-	fmt.Println("Server listening on port 8080")
+	port = os.Getenv("PORT")
 }
 
 func main() {
@@ -29,8 +30,13 @@ func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-
-	http.ListenAndServe(":8080", nil)
+	if port != 0 {
+		http.ListenAndServe(":" + port, nil)
+		fmt.Println("Server listening on port", port)
+	} else {
+		http.ListenAndServe(":8080", nil)
+		fmt.Println("Server listening on port 8080")
+	}
 }
 
 func index(w http.ResponseWriter, req *http.Request) {
