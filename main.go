@@ -11,7 +11,7 @@ import (
 
 var tpl *template.Template
 var SBM map[string]models.SpellBook
-var port int
+var port string
 type pageData struct {
 	Title string
 	SpellBook models.SpellBook
@@ -30,12 +30,12 @@ func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	http.Handle("/favicon.ico", http.NotFoundHandler())
-	if port != 0 {
-		http.ListenAndServe(":" + port, nil)
+	if port != "" {
 		fmt.Println("Server listening on port", port)
+		http.ListenAndServe(":" + port, nil)
 	} else {
-		http.ListenAndServe(":8080", nil)
 		fmt.Println("Server listening on port 8080")
+		http.ListenAndServe(":8080", nil)
 	}
 }
 
