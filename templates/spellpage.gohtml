@@ -1,0 +1,115 @@
+{{template "header" .}}
+
+{{template "nav-main"}}
+
+<h1>Hello, Amigo. Welcome to the Spellpage</h1>
+<div class="container">
+    <table class="table table-striped table-bordered table-hover table-condensed col-md-12" id="SpellTable">
+        <tr class="warning">
+            <th>Spell Name</th>
+            <td>Uses</td>
+            <td>Prepare</td>
+            <td>Use</td>
+        </tr>
+        <!--Spells to be added HERE-->
+    </table>
+</div>
+
+<!--
+<tr class="info">
+    <td>0th Spell Lvl</td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr class="success">
+    <td>CureMinorWounds</td>
+    <td id="CureMinorWounds">0</td>
+    <td><button class="btn" onclick="plusClicked('CureMinorWounds')">+</button></td>
+    <td><button class="btn" onclick="minusClicked('CureMinorWounds')">-</button></td>
+</tr>-->
+
+<script>
+    //Get data from PageData
+
+    var pd = {{.SpellBook}};
+
+
+    //Function Declarations
+    var plusClicked = function (id) {
+        var elem = document.getElementById(id);
+        var num = Number(elem.innerHTML) + 1;
+        elem.innerHTML = num;
+        elem.parentElement.className = "success";
+    };
+    var minusClicked = function (id) {
+        var elem = document.getElementById(id);
+        var num = elem.innerHTML - 1;
+        if (num >= 0) {
+            elem.innerHTML = "" + num;
+        }
+        if(num == 0) {
+            elem.parentElement.className = "";
+        }
+    };
+
+    var st = document.getElementById("SpellTable");
+
+    //Using a template, Populate SpellTable
+    for (var i = 0; pd.Sections[i] != null; i++) {
+        //Make LVL header
+        var r = document.createElement("tr");
+        r.className = "info";
+        var c = document.createElement("td");
+        c.innerHTML = "<h2>" + i + " LVL Spells</h2>";
+        r.appendChild(c);
+        for (var idx = 0; idx < 3; idx++) {
+            r.appendChild(document.createElement("td"))
+        }
+
+        //Append it to table
+        st.appendChild(r);
+        for (var j = 0; pd.Sections[i].Spells[j] != null; j++) {
+            //Make new row
+            var row = document.createElement("tr");
+            //Spell name and description
+            var spell = pd.Sections[i].Spells[j];
+            var desc = document.createElement("td");
+            desc.innerHTML = "<h4>" + spell.Title + "</h4><p>" + spell.School + "<br>" + spell.Range + ";" + spell.Save + ";" + spell.Description + "</p>";
+            row.appendChild(desc);
+            //Counter
+            var counter = document.createElement("td");
+            counter.innerHTML = 0;
+            counter.id = spell.Title;
+            row.appendChild(counter);
+            //+ btn
+            var plus_btn = document.createElement("td");
+            var pbString = "<button class='btn' onclick=plusClicked('";
+            pbString += spell.Title + "') />"
+            pbString += "+</button>";
+            plus_btn.innerHTML = pbString;
+//            var btn = document.createElement("button");
+//            btn.className = "btn";
+//            btn.onclick = plusClicked("spell.Title");
+//            btn.innerHTML = "+"
+//            plus_btn.appendChild(btn);
+            row.appendChild(plus_btn);
+            //- btn
+            var minus_btn = document.createElement("td");
+            var mbString = "<button class='btn' onclick=minusClicked('";
+            mbString += spell.Title + "') />";
+            mbString += "-</button>";
+            minus_btn.innerHTML = mbString;
+//            var btn = document.createElement("button");
+//            btn.className = "btn";
+//            btn.onclick = minusClicked(spell.Title);
+//            btn.innerHTML = "-";
+//            minus_btn.appendChild(btn);
+            row.appendChild(minus_btn);
+            //Append it to table
+            st.appendChild(row);
+        }
+    }
+</script>
+
+{{template "footer"}}
