@@ -2,6 +2,13 @@ package models
 
 var m map[string]SpellBook
 
+const BARD = "bard"
+const CLERIC = "cleric"
+const DRUID = "druid"
+const WIZARD = "wizard"
+const RANGER = "ranger"
+const PALADIN = "paladin"
+
 type Spell struct {
 	Title string
 	School string
@@ -58,7 +65,7 @@ func GetSpellBookMap() map[string]SpellBook{
 			},
 		}},
 	}}
-	m["Bard"] = book
+	m[BARD] = book
 
 	//Cleric Spells
 	book = SpellBook{Sections: []LevelSection{
@@ -97,7 +104,7 @@ func GetSpellBookMap() map[string]SpellBook{
 			},
 		}},
 	}}
-	m["Cleric"] = book
+	m[CLERIC] = book
 
 	return m
 }
